@@ -1,7 +1,7 @@
 import './login.model.dart';
 import 'package:flutter/material.dart';
 import '../../medical-appointments/list/medical_appointment_list.view.dart';
-import '../../doctors/list/doctor_list.view.dart';
+import '../../users/list/user_list.view.dart';
 import '../account-validation/account_validation.view.dart';
 
 class LoginController {
@@ -9,7 +9,7 @@ class LoginController {
 
   LoginController(this.context);
   Map<String,String> userPage = {
-    'admin@example.com':DoctorListPage.routeName,
+    'admin@example.com': UserListPage.routeName,
     'new_user@example.com':AccountValidationPage.routeName
   };
 
