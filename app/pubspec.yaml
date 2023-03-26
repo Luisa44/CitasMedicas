@@ -72,6 +72,7 @@ flutter:
     - assets/images/user_men.png
     - assets/images/user_woman_1.png
     - assets/images/user_woman_2.png
+    - assets/images/medical_appoinment_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
