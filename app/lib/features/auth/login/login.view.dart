@@ -20,7 +20,22 @@ class _LoginPage extends State<LoginPage> {
   Login login = Login();
 
   navigateUserPage(){
-    controller?.validateUser(login);
+    bool? logedIn = controller?.validateUser(login);
+
+    if(logedIn != null && !logedIn){
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          content: const Text('El usuario o contraseña son incorrectos'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
   
   @override
