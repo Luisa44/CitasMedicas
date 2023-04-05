@@ -1,4 +1,7 @@
+import 'package:app/features/users/list/user_list.model.dart';
 import 'package:flutter/material.dart';
+import './user_edit.model.dart';
+import '../../perfil/perfil.view.dart';
 
 class UserEditPage extends StatefulWidget {
   const UserEditPage({super.key});
@@ -16,19 +19,14 @@ class _UserEditPage extends State<UserEditPage> {
 
   @override
   Widget build(BuildContext context) {
+    final user = ModalRoute.of(context)!.settings.arguments as User?;
+
     return Scaffold(
-        drawer: Drawer(
-            child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text('Header')),
-          ],
-        )),
-        body: Container(
+        appBar: AppBar(
+          leading: const BackButton(),
+        ),
+        body: SingleChildScrollView(
+          child: Container(
             margin:
                 const EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 50),
             child: Form(
@@ -37,6 +35,7 @@ class _UserEditPage extends State<UserEditPage> {
                 const Text('Registro de Usuario', style: TextStyle(color: Colors.blue, fontSize: 30)),
                 const SizedBox(height: 30),
                 TextField(
+                    controller: TextEditingController(text: user != null ? user.name : '' ),
                     onChanged: (value) => {},
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -44,6 +43,7 @@ class _UserEditPage extends State<UserEditPage> {
                         hintText: 'Nombres')),
                 const SizedBox(height: 20),
                 TextField(
+                    controller: TextEditingController(text: user != null ? user.surname : '' ),
                     onChanged: (value) => {},
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -51,6 +51,7 @@ class _UserEditPage extends State<UserEditPage> {
                         hintText: 'Apellidos')),
                 const SizedBox(height: 20),
                 TextField(
+                    controller: TextEditingController(text: user != null ? 'email@test.com' : '' ),
                     onChanged: (value) => {},
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -58,6 +59,7 @@ class _UserEditPage extends State<UserEditPage> {
                         hintText: 'Correo')),
                 const SizedBox(height: 20),
                 TextField(
+                    controller: TextEditingController(text: user != null ? user.document : '' ),
                     onChanged: (value) => {},
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -65,6 +67,7 @@ class _UserEditPage extends State<UserEditPage> {
                         hintText: 'Documento')),
                 const SizedBox(height: 20),
                 TextField(
+                    controller: TextEditingController(text: user != null ? user.dateBirth.toString() : '' ),
                     onChanged: (value) => {},
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -101,26 +104,20 @@ class _UserEditPage extends State<UserEditPage> {
                     ),
                     const SizedBox(height:30),
                     ElevatedButton(
-                      onPressed: () => {},
+                      onPressed: () => Navigator.pop(context),
                       style: OutlinedButton.styleFrom(
                         minimumSize: const Size.fromHeight(50),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
                       ),
                       child: const Text('Guardar')),
-                    const SizedBox(height: 20),
-                    OutlinedButton(
-                      onPressed: () {},
-                      style: OutlinedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(50),
-                        side: const BorderSide(width: 2.0, color: Colors.blue),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                      child: const Text('Cancelar'))
                   ],
                 )
               ],
-            ))));
+            )
+          )
+        )
+      )
+    );
   }
 }

@@ -84,7 +84,20 @@ class _PerfilPage extends State<PerfilPage> {
                         hintText: 'Celular')),
                 const SizedBox(height: 30),
                 ElevatedButton(
-                  onPressed: () => {},
+                  onPressed: () {
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        content: const Text('Cambios Guardados'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'OK'),
+                            child: const Text('OK'),
+                          )
+                        ],
+                      ),
+                    );
+                  },
                   style: OutlinedButton.styleFrom(
                       minimumSize: const Size.fromHeight(50),
                       backgroundColor: Colors.blue,

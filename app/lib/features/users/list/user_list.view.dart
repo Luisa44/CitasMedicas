@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import './user_list.model.dart';
+import '../edit/user_edit.view.dart';
+import '../../perfil/perfil.view.dart';
+import '../../auth/login/login.view.dart';
+import '../edit/user_edit.view.dart';
 import "dart:math";
 
 class UserListPage extends StatefulWidget {
@@ -26,16 +30,81 @@ class _UserListPage extends State<UserListPage> {
     return Scaffold(
       appBar: AppBar(title: Text('Usuarios')),
       drawer: Drawer(
-          child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: const BoxDecoration(
+                color: Colors.blue, 
+                image: DecorationImage(
+                  image: AssetImage('assets/images/font.jpg'),
+                  fit: BoxFit.cover
+                )
               ),
-              child: Text('Header')),
-        ],
-      )),
+              child: Stack(
+                children: [
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: InkWell(
+                      onTap: (){
+                        Navigator.pushNamed(context, PerfilPage.routeName);
+                      },
+                      child: const Row(
+                        children: [
+                          Text(
+                            'Daniela Mateo Camacho',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16
+                            ),
+                          ),
+                          SizedBox(width: 5),
+                          CircleAvatar(
+                            backgroundImage: AssetImage('assets/images/user_woman_2.png'),
+                            radius: 30,
+                          )
+                        ]
+                      ),
+                    )
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              title: const Text('Crear Usuario'),
+              onTap: () {
+                Navigator.pushNamed(context, UserEditPage.routeName);
+              },
+            ),
+            ListTile(
+              title: const Text('Cerrar Sesión'),
+              onTap: () {
+                showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Text('Cerrar Sesión'),
+                    content: const Text('¿Desesa cerrar sesión?'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context, 'Cancel');
+                          Navigator.pushNamed(context, LoginPage.routeName);
+                        },
+                        child: const Text('Si'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                        child: const Text('No'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ]
+        )
+      ),
       body: Column(children: [
         const SizedBox(height: 7),
         TextField(
@@ -65,9 +134,10 @@ class _UserListPage extends State<UserListPage> {
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: items[index].role == 'Doctor'
-                                    ? AssetImage(
+                                    ? const AssetImage(
                                         'assets/images/doctor_profile.png')
-                                    : AssetImage('assets/images/user_men.png'),
+                                    : const AssetImage(
+                                        'assets/images/user_men.png'),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -86,7 +156,7 @@ class _UserListPage extends State<UserListPage> {
                                 const SizedBox(height: 30),
                                 RichText(
                                   text: TextSpan(
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Color.fromARGB(255, 95, 95, 95)),
                                     children: [
                                       const TextSpan(
@@ -99,9 +169,10 @@ class _UserListPage extends State<UserListPage> {
                                     ],
                                   ),
                                 ),
+                                const SizedBox(height: 5),
                                 RichText(
                                   text: TextSpan(
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Color.fromARGB(255, 95, 95, 95)),
                                     children: [
                                       const TextSpan(
@@ -112,9 +183,10 @@ class _UserListPage extends State<UserListPage> {
                                     ],
                                   ),
                                 ),
+                                const SizedBox(height: 5),
                                 RichText(
                                   text: TextSpan(
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Color.fromARGB(255, 95, 95, 95)),
                                     children: [
                                       const TextSpan(
@@ -125,15 +197,18 @@ class _UserListPage extends State<UserListPage> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: 16.0),
+                                const SizedBox(height: 16.0),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    ElevatedButton(
-                                      onPressed: () => {},
-                                      child: Row(children: [
+                                    Expanded(
+                                        child: ElevatedButton(
+                                      onPressed: () => {
+                                        Navigator.pushNamed(context, UserEditPage.routeName, arguments: items[index])
+                                      },
+                                      child: const Row(children: [
                                         Text('Detalle'),
-                                        const SizedBox(width: 5.0),
+                                        SizedBox(width: 5.0),
                                         Icon(Icons.remove_red_eye)
                                       ]),
                                       style: OutlinedButton.styleFrom(
@@ -142,23 +217,39 @@ class _UserListPage extends State<UserListPage> {
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(12))),
-                                    ),
+                                    )),
                                     const SizedBox(width: 8),
-                                    ElevatedButton(
-                                      onPressed: () => {},
+                                    Expanded(
+                                      child: ElevatedButton(
+                                      onPressed: () => showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) => AlertDialog(
+                                          title: const Text('Eliminar Usuario'),
+                                          content: Text('Esta seguro que quiere eliminar el usuario \'${items[index].name}\'?'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                                              child: const Text('No'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(context, 'OK'),
+                                              child: const Text('Si'),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                       child: Row(children: [
                                         Text('Eliminar'),
                                         const SizedBox(width: 5.0),
                                         Icon(Icons.delete)
                                       ]),
                                       style: OutlinedButton.styleFrom(
-                                          minimumSize: const Size.fromHeight(45),
                                           backgroundColor: Color.fromRGBO(
                                               255, 47, 47, 0.612),
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(12))),
-                                    ),
+                                    ))
                                   ],
                                 ),
                               ],
@@ -171,7 +262,9 @@ class _UserListPage extends State<UserListPage> {
                 }))
       ]),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, UserEditPage.routeName);
+          },
           backgroundColor: Colors.blue,
           child: const Icon(Icons.add)),
     );
