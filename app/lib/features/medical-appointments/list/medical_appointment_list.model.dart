@@ -3,6 +3,7 @@ class MedicalAppointment {
   DateTime date;
   String title;
   String description;
+  String? state;
 
-  MedicalAppointment({required this.title, this.description = '', required this.doctor, required this.date});
+  MedicalAppointment({required this.title, this.description = '', required this.doctor, required this.date, this.state});
 }
