@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../login/login.view.dart';
+import '../../medical-appointments/list/medical_appointment_list.view.dart';
 
 class AccountValidationPage extends StatefulWidget {
   const AccountValidationPage({super.key});
@@ -60,25 +61,40 @@ class _AccountValidationPage extends State<AccountValidationPage> {
         ),
         const SizedBox(height: 40),
         ElevatedButton(
-            onPressed: () => {},
-            style: OutlinedButton.styleFrom(
-              minimumSize: const Size.fromHeight(50),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-            ),
-            child: Text('Guardar')),
-        const SizedBox(height: 15),
-        ElevatedButton(
-            onPressed: () => {
-              Navigator.pushNamed(context, LoginPage.routeName)
+            onPressed: () {
+              showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text('Usuario Activado / Contraseña Cambiada'),
+                  content: const Text('El usuario fue activado con exito / La contraseña fue cambiada con exito'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'OK'),
+                      child: const Text('OK'),
+                    ),
+                  ],
+                ),
+              );
             },
             style: OutlinedButton.styleFrom(
-              backgroundColor: Colors.red,
               minimumSize: const Size.fromHeight(50),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
             ),
-            child: Text('Cancelar')),
+            child: const Text('Guardar')),
+        const SizedBox(height: 15),
+        OutlinedButton(
+          onPressed: () {
+            Navigator.pushNamed(context, LoginPage.routeName);
+          },
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size.fromHeight(50),
+            side: const BorderSide(width: 2.0, color: Colors.blue),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10)),
+          ),
+          child: const Text('Cancelar')
+        )
       ]),
     ));
   }
