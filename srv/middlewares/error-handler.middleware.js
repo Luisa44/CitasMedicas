@@ -1,19 +1,15 @@
-let Boom  = require('@hapi/boom');
+let Boom = require('@hapi/boom');
 
-function handleError(err, req, res, next){
-    console.log('hello error handler')
-    if(Boom.isBoom(err)){
-        //res.statusCode(err.)
-        console.log(err);
-        let {output} = err;
-        res.statusCode(output.statusCode).json(output.payload);
-    }else{
-        let error = Boom.internal();
-        console.log(error);
+function handleError(err, req, res, next) {
+    if (!Boom.isBoom(err)) {
+        console.error(err);
+        err = Boom.internal();
     }
+
+    res.status(err.output.statusCode).json(err.output.payload);
     next();
 }
 
 module.exports = {
-    handleError
-}
+    handleError,
+};

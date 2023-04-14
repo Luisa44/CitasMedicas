@@ -1,9 +1,14 @@
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require('../utils/consts')
+
 class AuthController{
 
     signIn(req, res, next){
         try{
-            throw new Error('test Error');
-            res.send('signIn works');
+            const { email, password } = req.body;
+            let payload = {userid: 5};
+            const token = jwt.sign(payload, JWT_SECRET, {expiresIn: '30s'});
+            res.json({token});
         }catch(err){
             next(err);
         }

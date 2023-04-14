@@ -3,13 +3,21 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
 const {handleError} = require('./middlewares/error-handler.middleware');
+const auth = require('./middlewares/auth.middleware')();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/user.route');
+const passport = require('passport');
+const bodyParser = require('body-parser');
 
 var app = express();
-
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use(auth.initialize());
+passport.user(new LocalStrategy)
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
