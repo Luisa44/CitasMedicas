@@ -7,7 +7,7 @@ class AuthController{
         try{
             const { email, password } = req.body;
             let payload = {userid: 5};
-            const token = jwt.sign(payload, JWT_SECRET, {expiresIn: '30s'});
+            const token = jwt.sign(payload, JWT_SECRET, {expiresIn: '10min'});
             res.json({token});
         }catch(err){
             next(err);
