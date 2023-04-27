@@ -11,7 +11,12 @@ const signUp = Joi.object({
     password: Joi.string().min(6).required(),
 });
 
+const passwordRecovery = Joi.object({
+    email: Joi.string().email().required(),
+});
+
 module.exports = {
     signIn,
     signUp,
+    passwordRecovery
 };

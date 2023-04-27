@@ -1,29 +1,46 @@
-const jwt = require('jsonwebtoken');
-const { JWT_SECRET } = require('../utils/consts')
+const { AuthService } = require('../services/auth.service');
 
 class AuthController{
 
-    signIn(req, res, next){
+    constructor(){
+        this.authService = new AuthService();
+    }
+
+    async signIn(req, res, next){
         try{
-            const { email, password } = req.body;
-            let payload = {userid: 5};
-            const token = jwt.sign(payload, JWT_SECRET, {expiresIn: '59min'});
+            let token = await this.authService.signIn(req.body);
             res.json({token});
         }catch(err){
             next(err);
         }
     }
 
-    signUp(req, res, next){
-        res.send('signUp works');
+    async signUp(req, res, next){
+        try{
+            this.authService.signUp(req.body);
+            res.send();
+        }catch(err){
+            next(err);
+        }
     }
 
-    passwordRecovery(req, res, next){
-        res.send('passwordRecovery works');
+    async passwordRecovery(req, res, next){
+        try{
+            console.log('pass')
+            await this.authService.recoverPassword(req.body.email);
+
+            res.send();
+        }catch(err){
+            next(err);
+        }
     }
 
-    enableUser(req, res, next){
-        res.send('enableUser works');
+    async changePassword(req, res, next){
+        try{
+            this.authService.changePassword(req.user.id, req.body.password);
+        }catch(err){
+            next(err);
+        }
     }
 }
 
