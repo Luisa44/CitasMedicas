@@ -12,26 +12,26 @@ const roleRouter = require('../routes/role.route');
 const specRouter = require('../routes/speciality.route');
 const loginRouter = require('../routes/login.route');
 const authRouter = require('../routes/auth.route');
-const API = '/api/v1'
+const API = '/api/v1';
 /* GET home page. */
 
-module.exports = (passport)=> {
-  router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Express' });
-  });
-  router.use(`${API}/auth`, authRouter);
-  router.use(passport.authenticate('jwt', {session: false}));
-  router.use(`${API}/login`, loginRouter);
-  router.use(`${API}/doctor`, doctorRouter);
-  router.use(`${API}/patients`, pacientRouter);
-  router.use(`${API}/doctor-roles`, docRoleRouter);
-  router.use(`${API}/roles`, roleRouter);
-  router.use(`${API}/specialities`, specRouter);
-  router.use(`${API}/headquarters`, headquartersRouter);
-  router.use(`${API}/medical-appointment-status`, medAppStatusRouter);
-  router.use(`${API}/medical-appointment-details`, medAppDetailRouter);
-  router.use(`${API}/medical-appointments`, medAppRouter);
-  router.use(`${API}/medical-procedures`, medProcedureRouter);
+module.exports = (passport) => {
+	router.get('/', function (req, res, next) {
+		res.render('index', { title: 'Express' });
+	});
+	router.use(`${API}/auth`, authRouter(passport));
+	router.use(passport.authenticate('jwt', { session: false }));
+	router.use(`${API}/login`, loginRouter);
+	router.use(`${API}/doctors`, doctorRouter);
+	router.use(`${API}/patients`, pacientRouter);
+	router.use(`${API}/doctor-roles`, docRoleRouter);
+	router.use(`${API}/roles`, roleRouter);
+	router.use(`${API}/specialities`, specRouter);
+	router.use(`${API}/headquarters`, headquartersRouter);
+	router.use(`${API}/medical-appointment-status`, medAppStatusRouter);
+	router.use(`${API}/medical-appointment-details`, medAppDetailRouter);
+	router.use(`${API}/medical-appointments`, medAppRouter);
+	router.use(`${API}/medical-procedures`, medProcedureRouter);
 
-  return router;
-}
+	return router;
+};

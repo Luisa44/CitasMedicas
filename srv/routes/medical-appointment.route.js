@@ -3,10 +3,10 @@ const { MedicalAppointmentController } = require('../controllers/medical-appoint
 var router = express.Router();
 const medAppController = new MedicalAppointmentController();
 
-router.get('/', medAppController.getAll);
-router.get('/:id', medAppController.getOne);
-router.post('/', medAppController.create);
-router.put('/:id', medAppController.update);
-router.delete('/:id', medAppController.deleteOne);
+router.get('/', medAppController.getAll.bind(medAppController));
+router.get('/:id', medAppController.getOne.bind(medAppController));
+router.post('/', medAppController.create.bind(medAppController));
+router.put('/:id', medAppController.update.bind(medAppController));
+router.delete('/:id', medAppController.deleteOne.bind(medAppController));
 
 module.exports = router;

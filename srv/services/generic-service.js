@@ -26,8 +26,7 @@ class GenericService {
 
 	async create(data) {
 		let createdId = await this.model.save(data);
-        let result = await this.getOne(createdId);
-        return result[0];
+        return this.getOne(createdId);
 	}
 
 	async update(id, data) {

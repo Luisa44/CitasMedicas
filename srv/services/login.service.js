@@ -7,10 +7,11 @@ class LoginService extends GenericService {
 		super(new LoginModel());
 	}
 
-	getByUsername(username, options) {
-		let login = this.model.getByUser(username, options);
+	async getByEmail(email, options) {
+		let login = await this.model.findByEmail(email, options);
+		
 		if(!login.length){
-			throw Boom.notFound(`The user "${username}" doesn't exist`);
+			throw Boom.notFound(`The user "${email}" doesn't exist`);
 		}
 
 		return login[0];

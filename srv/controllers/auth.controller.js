@@ -17,7 +17,7 @@ class AuthController{
 
     async signUp(req, res, next){
         try{
-            this.authService.signUp(req.body);
+            await this.authService.signUp(req.body);
             res.send();
         }catch(err){
             next(err);
@@ -26,7 +26,6 @@ class AuthController{
 
     async passwordRecovery(req, res, next){
         try{
-            console.log('pass')
             await this.authService.recoverPassword(req.body.email);
 
             res.send();
@@ -37,7 +36,11 @@ class AuthController{
 
     async changePassword(req, res, next){
         try{
-            this.authService.changePassword(req.user.id, req.body.password);
+            await this.authService.changePassword(req.user.id, req.body.password);
+            res.json({
+                statsuCode: 200,
+                message: 'The new password was set' 
+            });
         }catch(err){
             next(err);
         }

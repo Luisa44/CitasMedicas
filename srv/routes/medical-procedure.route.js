@@ -3,10 +3,10 @@ const { MedicalProcedureController } = require('../controllers/medical-procedure
 var router = express.Router();
 const medProController = new MedicalProcedureController();
 
-router.get('/', medProController.getAll);
-router.get('/:id', medProController.getOne);
-router.post('/', medProController.create);
-router.put('/:id', medProController.update);
-router.delete('/:id', medProController.deleteOne);
+router.get('/', medProController.getAll.bind(medProController));
+router.get('/:id', medProController.getOne.bind(medProController));
+router.post('/', medProController.create.bind(medProController));
+router.put('/:id', medProController.update.bind(medProController));
+router.delete('/:id', medProController.deleteOne.bind(medProController));
 
 module.exports = router;

@@ -13,7 +13,7 @@ module.exports = function (passport) {
             if (payload.expire <= Date.now()) {
                 done(new Error('TokenExpired'), null);
             } else {
-                done(null, { userid: 5 });
+                done(null, { id: payload.idUser, role: payload.role, email: payload.email });
             }
         })
     );

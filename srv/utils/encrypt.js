@@ -8,7 +8,7 @@ module.exports = {
 
 	compare: async (password, hashPassword) => {
 		let isEqual = await bcrypt.compare(password, hashPassword);
-
+		
         if(!isEqual) {
             throw new Error('The passwords are not equals');
         }

@@ -1,7 +1,7 @@
 const dbClient = require('../config/db');
 
 class GenericModel {
-	constructor(entity = 'test', primaryKey = 'id') {
+	constructor(entity, primaryKey = 'id') {
 		this.entity = entity;
 		this.primaryKey = primaryKey;
 		this.dbClient = dbClient;
@@ -14,7 +14,7 @@ class GenericModel {
 			fields = options.fields || '*';
 		}
 
-		return this.dbClient.singleQuery(`SELECT ${fields} FROM ${this.entity}`);
+		return this.dbClient.singleQuery(`SELECT ${fields} FROM citasmedicas.${this.entity}`);
 	}
 
 	findById(id, options = null) {
@@ -24,11 +24,11 @@ class GenericModel {
 			fields = options.fields || '*';
 		}
 
-		return this.dbClient.singleQuery(`SELECT ${fields} FROM ${this.entity} WHERE ${this.primaryKey}=${id}`);
+		return this.dbClient.singleQuery(`SELECT ${fields} FROM citasmedicas.${this.entity} WHERE ${this.primaryKey}=${id}`);
 	}
 
 	async deleteById(id) {
-		await this.dbClient.transactionQuery(`DELETE FROM ${this.entity} WHERE ${this.primaryKey} = ${id}`);
+		await this.dbClient.transactionQuery(`DELETE FROM citasmedicas.${this.entity} WHERE ${this.primaryKey} = ${id}`);
 	}
 
 	async save(data) {
@@ -47,7 +47,7 @@ class GenericModel {
 		values = values.join(',');
 		columns = columns.join(',');
 
-		let result = await this.dbClient.transactionQuery(`INSERT INTO ${this.entity} (${columns}) VALUES(${values});`);
+		let result = await this.dbClient.transactionQuery(`INSERT INTO citasmedicas.${this.entity} (${columns}) VALUES(${values});`);
 		return result.insertId;
 	}
 
@@ -63,7 +63,7 @@ class GenericModel {
 		}
 
 		values = values.join(',');
-		await this.dbClient.transactionQuery(`UPDATE ${this.entity} SET ${values} WHERE ${this.primaryKey}=${id}`);
+		await this.dbClient.transactionQuery(`UPDATE citasmedicas.${this.entity} SET ${values} WHERE ${this.primaryKey}=${id}`);
 	}
 }
 

@@ -1,4 +1,6 @@
 const { LoginService } = require('./login.service');
+const { PatientService } = require('./patient.service');
+const { DoctorService } = require('./doctor.service');
 const encrypt = require('../utils/encrypt');
 const generator = require('generate-password');
 const { EmailBuilder } = require('../utils/email/email-builder');
@@ -7,42 +9,85 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../utils/consts');
 
 class AuthService {
-    constructor(){
-        this.loginService = new LoginService();
-    }
-	
-    async recoverPassword(email){
-        //let login = await this.loginService.getByUsername(email);
-        let newPassword = generator.generate({numbers: true});
-        let newPassHash = await encrypt.hashPassword(newPassword);
-        let emailSender = new EmailBuilder().setTo(email).setSubject('Password Recovery').setText(`You temporal password is: ${newPassword}`).build();
-        await emailSender.sendEmail();
-        //this.loginService.update(login.idlogin, {recuperar: true, contrasena: newPassHash})
-    }
+	constructor() {
+		this.loginService = new LoginService();
+		this.patientService = new PatientService();
+		this.doctorService = new DoctorService();
+	}
 
-    async signIn(credentials){
-        const { email, password } = credentials;
-        let login;
+	async recoverPassword(email) {
+		let login = await this.loginService.getByEmail(email);
+		let newPassword = generator.generate({ numbers: true });
+		let newPassHashed = await encrypt.hashPassword(newPassword);
+		let emailSender = new EmailBuilder()
+			.setTo(email)
+			.setSubject('Password Recovery')
+			.setText(`You temporal password is: ${newPassword}`)
+			.build();
+		await emailSender.sendEmail();
+		await this.loginService.update(login.idlogin, {activo: false, contrasena: newPassHashed})
+	}
 
-        try{
-            //login = await this.loginService.getByUsername(email);
-            await encrypt.compare(password, "$2b$10$EemFVfljeQOfGhAM0J103uExI1ULIpvCw2KPWuo1prs/uqgIts1zq");
-        }catch(err){
-            throw Boom.forbidden();
-        }
-        
-        let payload = {email: email, idUser: 5, role: 'doctor', activo: false};
-        return jwt.sign(payload, JWT_SECRET, {expiresIn: '59min'});
-    }
+	async signIn(credentials) {
+		const { email, contrasena } = credentials;
+		let login;
+		let role;
 
-    async signUp(login){
-        login.password = await encrypt.hashPassword(login.password);
-        //this.loginService.create(login);
-    }
+		try {
+			login = await this.loginService.getByEmail(email);
+			await encrypt.compare(contrasena, login.contrasena);
+			try {
+				await this.patientService.getByLoginId(login.idlogin);
+				role = 'patient';
+			} catch (err) {
+				let userRole = await this.doctorService.getRoleByLoginId(login.idlogin);
+				if(userRole.rol === 'Administrador'){
+					role = 'administrator';
+				}else{
+					role = 'doctor';
+				}
+			}
+		} catch (err) {
+			console.log(err);
+			throw Boom.forbidden();
+		}
 
-    async changePassword(idUser, newPassword){
-        this.loginService.update(idUser, { contrasna: newPassword});
-    }
+		let payload = { email: login.email, idUser: login.idlogin, role, activo: login.activo === 1 };
+		return jwt.sign(payload, JWT_SECRET, { expiresIn: '59min' });
+	}
+
+	async signUp(login) {
+		login.contrasena = await encrypt.hashPassword(login.contrasena);
+		login.activo = true;
+		login.recuperar_contrasena = false;
+		let loginCreated;
+
+		try {
+			try {
+				await this.loginService.getByEmail(login.email);
+				throw Boom.badRequest(`The user with email "${login.email}" alredy exists`);
+			} catch (err) {
+				if (Boom.isBoom(err)) {
+					if (err.output.statusCode === 400) {
+						throw err;
+					}
+				}
+			}
+
+			loginCreated = await this.loginService.create(login);
+			this.patientService.create({ login_id: loginCreated.idlogin });
+		} catch (err) {
+			if (loginCreated) {
+				await this.loginService.deleteOne(loginCreated.idlogin);
+			}
+			throw err;
+		}
+	}
+
+	async changePassword(idUser, newPassword) {
+		let newPassHashed = await encrypt.hashPassword(newPassword);
+		await this.loginService.update(idUser, { contrasena: newPassHashed, activo: true });
+	}
 }
 
 module.exports = { AuthService };
