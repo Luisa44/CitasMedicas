@@ -1,14 +1,34 @@
 class Login {
-  dynamic email;
-  dynamic password;
+  String? email;
+  String? contrasena;
 
-  Login();
+  Login({this.email, this.contrasena});
 
-  getEmail() {
-    return email;
+  Login.fromJson(Map<String, dynamic> json) {
+    email = json["email"];
+    contrasena = json["contrasena"];
   }
 
-  getPassword() {
-    return password;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> _data = <String, dynamic>{};
+    _data["email"] = email;
+    _data["contrasena"] = contrasena;
+    return _data;
+  }
+}
+
+class LoginResponse {
+  String token = '';
+
+  LoginResponse({this.token = ''});
+
+  LoginResponse.fromJson(Map<String, dynamic> json) {
+    token = json["token"];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> _data = <String, dynamic>{};
+    _data["token"] = token;
+    return _data;
   }
 }

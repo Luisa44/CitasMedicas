@@ -1,0 +1,27 @@
+class Session {
+  String? token;
+  String? role;
+  bool? active;
+  int? userId;
+  String? email;
+
+  Session({this.token, this.role, this.active, this.userId, this.email});
+
+  Session.fromJson(Map<String, dynamic> json) {
+    token = json["token"];
+    role = json["role"];
+    active = json["active"];
+    userId = json["user_id"];
+    email = json["email"];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> _data = <String, dynamic>{};
+    _data["token"] = token;
+    _data["role"] = role;
+    _data["active"] = active;
+    _data["user_id"] = userId;
+    _data["email"] = email;
+    return _data;
+  }
+}

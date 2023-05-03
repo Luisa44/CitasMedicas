@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const passport = require("passport");
+const cors = require('cors');
 const {handleError} = require('./middlewares/error-handler.middleware');
 const applyPassportStrategy = require('./middlewares/auth.middleware');
 
@@ -11,6 +12,7 @@ var initializeRoutes = require('./routes/index');
 const bodyParser = require('body-parser');
 
 var app = express();
+app.use(cors());
 app.use(passport.initialize());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

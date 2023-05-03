@@ -11,6 +11,7 @@ import './features/medical-appointments/edit/medical_appointment_edit.view.dart'
 import './features/medical-appointments/reschedule/medical_appointment_reschedule.view.dart';
 import './features/medical-appointments/doctor-programer/medical_appointment_doctor_programer.view.dart';
 import 'features/users/edit/user_edit.view.dart';
+//import 'package:provider/provider.dart';
 import 'features/users/list/user_list.view.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,7 @@ void main() {
   runApp(MaterialApp(
       title: 'Citas Medicas',
       //theme: ThemeData(fontFamily: 'Archivo'),
-      initialRoute: MedicalAppointmentDocProgramerPage.routeName,
+      initialRoute: LoginPage.routeName,
       routes: {
         LoginPage.routeName: (context) => const LoginPage(),
         RegisterPage.routeName: (context) => const RegisterPage(),

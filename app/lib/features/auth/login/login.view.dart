@@ -19,7 +19,7 @@ class _LoginPage extends State<LoginPage> {
   LoginController? controller = null;
   Login login = Login();
 
-  navigateUserPage(){
+  /*navigateUserPage(){
     bool? logedIn = controller?.validateUser(login);
 
     if(logedIn != null && !logedIn){
@@ -36,11 +36,11 @@ class _LoginPage extends State<LoginPage> {
         ),
       );
     }
-  }
-  
+  }*/
+
   @override
   Widget build(BuildContext context) {
-    controller = new LoginController(context);
+    controller = LoginController(context);
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
@@ -61,7 +61,7 @@ class _LoginPage extends State<LoginPage> {
                       hintText: 'Correo')),
               const SizedBox(height: 20),
               TextField(
-                onChanged: (value) => {login.password = value},
+                onChanged: (value) => {login.contrasena = value},
                 obscureText: _isObscure,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -79,7 +79,14 @@ class _LoginPage extends State<LoginPage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                  onPressed: () => {navigateUserPage()},
+                  onPressed: () async {
+                    bool isLogged = await controller!.signIn(login);
+                    if (!isLogged) {
+                      print('logged');
+                    } else {
+                      print('not logged');
+                    }
+                  },
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size.fromHeight(50),
                     shape: RoundedRectangleBorder(

@@ -1,34 +1,48 @@
+import 'package:app/features/auth/account-validation/account_validation.view.dart';
+import 'package:app/features/medical-appointments/list/medical_appointment_list.view.dart';
+import 'package:app/features/users/list/user_list.view.dart';
+import 'package:app/utils/session/session.model.dart';
 import './login.model.dart';
 import 'package:flutter/material.dart';
-import '../../medical-appointments/list/medical_appointment_list.view.dart';
-import '../../users/list/user_list.view.dart';
-import '../account-validation/account_validation.view.dart';
+import './login.service.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 
 class LoginController {
   BuildContext context;
+  LoginService service = LoginService();
 
   LoginController(this.context);
-  Map<String,String> userPage = {
-    'admin@example.com': UserListPage.routeName,
-    'new_user@example.com': AccountValidationPage.routeName,
-    'user@example.com': MedicalAppointmentListPage.routeName,
-    'doctor@example.com': MedicalAppointmentListPage.routeName
-  };
 
-  bool validateUser(Login login) {
-    String navigateRoute = '';
-    String defaulRoute = MedicalAppointmentListPage.routeName;
+  Future<bool> signIn(Login data) async {
+    LoginResponse? response = await service.signIn(data);
 
-    if (userPage.containsKey(login.getEmail())) {
-      navigateRoute = userPage[login.getEmail().toString()]!;
-      if(login.getEmail().toString() == 'doctor@example.com' || login.getEmail() == 'user@example.com'){
-        Navigator.pushNamed(context, navigateRoute, arguments: login.getEmail().toString());
-      }else{
-        Navigator.pushNamed(context, navigateRoute);
-      }
-      return true;
+    if(response == null){
+      return false;
     }
 
-    return false;
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(response.token);
+
+    Session userSession = Session(
+      token: response.token, 
+      active:decodedToken['activo'], 
+      email: decodedToken['email'],  
+      role: decodedToken['role'], 
+      userId: decodedToken['idUser']
+    );
+
+    await SessionManager().set('user_session', userSession);
+
+    if(userSession.active == false){
+      Navigator.pushNamed(context, AccountValidationPage.routeName);
+    }else {
+      if(userSession.role == 'administrator'){
+      Navigator.pushNamed(context, UserListPage.routeName);
+      }else if(userSession.role == 'doctor' || userSession.role == 'patient'){
+        Navigator.pushNamed(context, MedicalAppointmentListPage.routeName);
+      }
+    }
+
+    return true;
   }
 }

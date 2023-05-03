@@ -5,6 +5,7 @@ import '../../perfil/perfil.view.dart';
 import '../../auth/login/login.view.dart';
 import '../edit/user_edit.view.dart';
 import "dart:math";
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 
 class UserListPage extends StatefulWidget {
   const UserListPage({super.key});
@@ -16,6 +17,18 @@ class UserListPage extends StatefulWidget {
 }
 
 class _UserListPage extends State<UserListPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    getUserInfo();
+  }
+
+  getUserInfo() async{
+    dynamic userSession = await SessionManager().get('user_session');
+    print(userSession.toString());
+  }
+
   List<User> items = List<User>.generate(15, (i) {
     return User(
         name: 'Nombre ${i}',
@@ -24,6 +37,8 @@ class _UserListPage extends State<UserListPage> {
         dateBirth: DateTime.now(),
         document: '${i}464674879');
   });
+
+
 
   @override
   Widget build(BuildContext context) {
