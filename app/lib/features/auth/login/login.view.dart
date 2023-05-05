@@ -4,6 +4,7 @@ import '../register/register.view.dart';
 import '../forgotten-password/forgotten-password.view.dart';
 import './login.controller.dart';
 import './login.model.dart';
+import 'package:toast/toast.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -19,28 +20,11 @@ class _LoginPage extends State<LoginPage> {
   LoginController? controller = null;
   Login login = Login();
 
-  /*navigateUserPage(){
-    bool? logedIn = controller?.validateUser(login);
-
-    if(logedIn != null && !logedIn){
-      showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          content: const Text('El usuario o contraseña son incorrectos'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'OK'),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-    }
-  }*/
-
   @override
   Widget build(BuildContext context) {
+    ToastContext().init(context);
     controller = LoginController(context);
+
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
@@ -82,9 +66,11 @@ class _LoginPage extends State<LoginPage> {
                   onPressed: () async {
                     bool isLogged = await controller!.signIn(login);
                     if (!isLogged) {
-                      print('logged');
-                    } else {
-                      print('not logged');
+                      Toast.show(
+                        'Usuario o contraseña incorrectos', 
+                        duration: Toast.lengthLong, 
+                        gravity: Toast.top, 
+                        backgroundColor: Color.fromARGB(234, 255, 0, 0));
                     }
                   },
                   style: OutlinedButton.styleFrom(
