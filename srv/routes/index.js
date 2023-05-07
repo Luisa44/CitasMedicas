@@ -7,6 +7,7 @@ const medAppDetailRouter = require('../routes/medical-appointment-detail.route')
 const medAppStatusRouter = require('../routes/medical-appointment-status.route');
 const medAppRouter = require('../routes/medical-appointment.route');
 const medProcedureRouter = require('../routes/medical-procedure.route');
+const userRouter = require('../routes/user.route');
 const pacientRouter = require('../routes/patient.route');
 const roleRouter = require('../routes/role.route');
 const specRouter = require('../routes/speciality.route');
@@ -32,6 +33,7 @@ module.exports = (passport) => {
 	router.use(`${API}/medical-appointment-details`, medAppDetailRouter);
 	router.use(`${API}/medical-appointments`, medAppRouter);
 	router.use(`${API}/medical-procedures`, medProcedureRouter);
+	router.use(`${API}/users`, userRouter);
 
 	return router;
 };
