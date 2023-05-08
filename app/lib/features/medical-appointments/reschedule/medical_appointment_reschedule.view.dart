@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../list/medical_appointment_list.model.dart';
+import './medical_appointment_reschedule.model.dart';
 import '../detail/medical_appointment_detail.view.dart';
 
 class MedicalAppointmentReschedulePage extends StatefulWidget {

@@ -22,11 +22,17 @@ class _UserListPage extends State<UserListPage> {
 
   List<User> users = List.empty();
   UserController controller = UserController();
+  Session? userSession;
 
   @override
   void initState() {
     super.initState();
     getUsers();
+    loadUserInfo();
+  }
+
+  loadUserInfo() async{
+    userSession = Session.fromJson(await SessionManager().get('user_session'));
   }
 
   getUsers() async {
@@ -63,17 +69,16 @@ class _UserListPage extends State<UserListPage> {
                       onTap: (){
                         Navigator.pushNamed(context, PerfilPage.routeName);
                       },
-                      child: const Row(
+                      child: Row(
                         children: [
-                          Text(
-                            'Daniela Mateo Camacho',
-                            style: TextStyle(
+                          Text( userSession?.userName ?? '',
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16
                             ),
                           ),
-                          SizedBox(width: 5),
-                          CircleAvatar(
+                          const SizedBox(width: 5),
+                          const CircleAvatar(
                             backgroundImage: AssetImage('assets/images/user_woman_2.png'),
                             radius: 30,
                           )

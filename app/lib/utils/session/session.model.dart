@@ -1,11 +1,12 @@
 class Session {
   String? token;
+  String? userName;
   String? role;
   bool? active;
   int? userId;
   String? email;
 
-  Session({this.token, this.role, this.active, this.userId, this.email});
+  Session({this.token, this.role, this.active, this.userId, this.email, this.userName});
 
   Session.fromJson(Map<String, dynamic> json) {
     token = json["token"];
@@ -13,6 +14,7 @@ class Session {
     active = json["active"];
     userId = json["user_id"];
     email = json["email"];
+    userName = json["user_name"];
   }
 
   Map<String, dynamic> toJson() {
@@ -22,6 +24,7 @@ class Session {
     _data["active"] = active;
     _data["user_id"] = userId;
     _data["email"] = email;
+    _data["user_name"] = userName;
     return _data;
   }
 }

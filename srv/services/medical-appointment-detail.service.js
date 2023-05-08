@@ -5,6 +5,10 @@ class MedicalAppointmentDetailService extends GenericService {
 	constructor() {
 		super(new MedicalAppointmentDetailModel());
 	}
+
+	async deleteOneByMedicalAppointmentId(id) {
+		await this.model.deleteByMedicalAppointmentId(id);
+	}
 }
 
 module.exports = { MedicalAppointmentDetailService };

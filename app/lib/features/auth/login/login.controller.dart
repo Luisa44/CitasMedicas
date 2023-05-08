@@ -25,10 +25,11 @@ class LoginController {
 
     Session userSession = Session(
       token: response.token, 
-      active:decodedToken['activo'], 
+      active: decodedToken['activo'], 
       email: decodedToken['email'],  
       role: decodedToken['role'], 
-      userId: decodedToken['idUser']
+      userId: decodedToken['idUser'],
+      userName: decodedToken['user_name']
     );
 
     await SessionManager().set('user_session', userSession);

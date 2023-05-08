@@ -32,10 +32,12 @@ class AuthService {
 		const { email, contrasena } = credentials;
 		let login;
 		let role;
+		let userName;
 
 		try {
 			login = await this.loginService.getByEmail(email);
 			await encrypt.compare(contrasena, login.contrasena);
+			userName = login.user_name;
 			try {
 				await this.patientService.getByLoginId(login.idlogin);
 				role = 'patient';
@@ -52,7 +54,7 @@ class AuthService {
 			throw Boom.forbidden();
 		}
 
-		let payload = { email: login.email, idUser: login.idlogin, role, activo: login.activo === 1 };
+		let payload = { email: login.email, idUser: login.idlogin, role, activo: login.activo === 1, user_name: userName };
 		return jwt.sign(payload, JWT_SECRET, { expiresIn: '59min' });
 	}
 
