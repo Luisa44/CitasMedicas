@@ -12,6 +12,10 @@ class DoctorRoleModel extends GenericModel {
         INNER JOIN citasmedicas.medicoadminrol as mar ON mar.idmedicoadmin = ma.idmedicoadmin
         WHERE l.idlogin = ${loginId}`);
     }
+
+    async deleteByDoctorAdminId(docAdminId){
+		return this.dbClient.singleQuery(`DELETE FROM citasmedicas.medicoadminrol WHERE idmedicoadmin = ${docAdminId}`);
+	}
 }
 
 module.exports = { DoctorRoleModel };
