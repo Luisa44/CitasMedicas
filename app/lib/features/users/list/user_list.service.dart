@@ -30,4 +30,26 @@ class UserService extends ChangeNotifier {
       return List.empty();
     }
   }
+
+  Future<bool> deteleOne(int id) async {
+    Uri url = Uri.https(constants.serviceHost, '${constants.apiPath}/doctors/$id');
+
+    try {
+      Session userSession = Session.fromJson(await SessionManager().get('user_session'));
+
+      Map<String, String> headers = {
+        "Authorization": 'Bearer ${userSession.token ?? ''}'
+      };
+      var response = await http.delete(url, headers: headers);
+
+      if (response.statusCode != 200) {
+        return false;
+      }
+
+      return true;
+    } catch (err) {
+      print(err);
+      return false;
+    }
+  }
 }

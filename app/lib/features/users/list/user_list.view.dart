@@ -255,7 +255,11 @@ class _UserListPage extends State<UserListPage> {
                                                 child: const Text('No'),
                                               ),
                                               TextButton(
-                                                onPressed: () => Navigator.pop(context, 'OK'),
+                                                onPressed: () async { 
+                                                  await controller.deleteOne(users[index]);
+                                                  await getUsers();
+                                                  Navigator.pop(context, 'OK');
+                                                },
                                                 child: const Text('Si'),
                                               ),
                                             ],
