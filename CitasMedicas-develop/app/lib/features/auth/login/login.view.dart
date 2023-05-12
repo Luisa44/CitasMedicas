@@ -1,0 +1,141 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
+import '../register/register.view.dart';
+import '../forgotten-password/forgotten-password.view.dart';
+import './login.controller.dart';
+import './login.model.dart';
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  static String routeName = '/login';
+
+  @override
+  State<LoginPage> createState() => _LoginPage();
+}
+
+class _LoginPage extends State<LoginPage> {
+  bool _isObscure = true;
+  LoginController? controller = null;
+  Login login = Login();
+
+  /*navigateUserPage(){
+    bool? logedIn = controller?.validateUser(login);
+
+    if(logedIn != null && !logedIn){
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          content: const Text('El usuario o contraseña son incorrectos'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }*/
+
+  @override
+  Widget build(BuildContext context) {
+    controller = LoginController(context);
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SingleChildScrollView(
+            child: Container(
+          margin:
+              const EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 50),
+          child: Column(
+            children: [
+              const Text('Inicio de Sesión',
+                  style: TextStyle(color: Colors.blue, fontSize: 30)),
+              Image.asset('assets/images/login_2.png', cacheHeight: 330),
+              const SizedBox(height: 20),
+              TextField(
+                  
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      hintText: 'Correo')),
+              const SizedBox(height: 20),
+              TextField(
+                onChanged: (value) => {login.contrasena = value},
+                obscureText: _isObscure,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    hintText: 'Contraseña',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                          _isObscure ? Icons.visibility : Icons.visibility_off),
+                      onPressed: () => {
+                        setState(() {
+                          _isObscure = !_isObscure;
+                        })
+                      },
+                    )),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                  onPressed: () async {
+                    bool isLogged = await controller!.signIn(login);
+                    if (!isLogged) {
+                      print('logged');
+                    } else {
+                      print('not logged');
+                    }
+                  },
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                  ),
+                  child: Text('Ingresar')),
+              const SizedBox(height: 12),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Text.rich(
+                    TextSpan(
+                        text: 'Ingresar con huella',
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            print('nice');
+                          }),
+                    style: TextStyle(color: Color.fromARGB(255, 65, 65, 65))),
+                Text.rich(TextSpan(
+                    text: 'Olvido su contraseña?',
+                    style: TextStyle(color: Colors.blue),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        Navigator.pushNamed(
+                            context, ForgottenPasswordPage.routeName);
+                      })),
+              ]),
+              const SizedBox(height: 20),
+              const Row(children: [
+                Expanded(child: Divider(color: Colors.grey, height: 48)),
+                const SizedBox(width: 10),
+                Text('No tienes cuenta?',
+                    style:
+                        TextStyle(color: Color.fromARGB(255, 116, 116, 116))),
+                const SizedBox(width: 10),
+                Expanded(child: Divider(color: Colors.grey, height: 48)),
+              ]),
+              const SizedBox(height: 10),
+              OutlinedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, RegisterPage.routeName);
+                  },
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                    side: const BorderSide(width: 2.0, color: Colors.blue),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                  ),
+                  child: const Text('Registrarse')),
+            ],
+          ),
+        )));
+  }
+}
