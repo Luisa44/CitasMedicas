@@ -300,8 +300,8 @@ class _MedicalAppointmentListPage extends State<MedicalAppointmentListPage> {
                                               onPressed: () async {
                                                 var deleted = await controller.deleteOne(medAppoitmentsList[index]);
                                                 if(deleted){
-                                                  Navigator.pop(context, 'OK');
                                                   await getAll();
+                                                  Navigator.pop(context, 'OK');
                                                 }
                                               },
                                               child: const Text('Si'),
