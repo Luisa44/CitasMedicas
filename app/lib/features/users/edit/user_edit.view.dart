@@ -1,3 +1,4 @@
+import 'package:app/constants/app_constants.dart';
 import 'package:app/features/users/edit/user_edit.model.dart';
 import 'package:app/features/users/list/user_list.model.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class UserEditPage extends StatefulWidget {
 enum RolesAvailable { Doctor, Administrador }
 
 class _UserEditPage extends State<UserEditPage> {
+  final _formKey = GlobalKey<FormState>();
   RolesAvailable? _role = RolesAvailable.Administrador;
   List<DropdownMenuEntry<Speciality>> specialitiesEntry = List.empty(growable: true);
   UserEditController controller = UserEditController();
@@ -37,7 +39,6 @@ class _UserEditPage extends State<UserEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
     
     controller.appendContext(context);
     var user = ModalRoute.of(context)!.settings.arguments as User?;
@@ -110,6 +111,10 @@ class _UserEditPage extends State<UserEditPage> {
                       validator: (value){
                         if(value == ''){
                           return 'Este campo es requerido';
+                        }
+
+                        if(!regexEmail.hasMatch(value ?? '')){
+                          return 'Debe ingresar un correo valido';
                         }
                       },
                       readOnly: isEditing,
@@ -210,8 +215,6 @@ class _UserEditPage extends State<UserEditPage> {
                             if(isSaved) {
                               Navigator.pop(context);
                             }
-                          }else{
-                            print('problems');
                           }
                         },
                         style: OutlinedButton.styleFrom(
