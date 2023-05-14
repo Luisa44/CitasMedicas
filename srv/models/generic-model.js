@@ -28,7 +28,7 @@ class GenericModel {
 	}
 
 	async deleteById(id) {
-		await this.dbClient.transactionQuery(`DELETE FROM citasmedicas.${this.entity} WHERE ${this.primaryKey} = ${id}`);
+		await this.dbClient.singleQuery(`DELETE FROM citasmedicas.${this.entity} WHERE ${this.primaryKey} = ${id}`);
 	}
 
 	async save(data) {
@@ -47,7 +47,7 @@ class GenericModel {
 		values = values.join(',');
 		columns = columns.join(',');
 
-		let result = await this.dbClient.transactionQuery(`INSERT INTO citasmedicas.${this.entity} (${columns}) VALUES(${values});`);
+		let result = await this.dbClient.singleQuery(`INSERT INTO citasmedicas.${this.entity} (${columns}) VALUES(${values});`);
 		return result.insertId;
 	}
 
@@ -63,7 +63,7 @@ class GenericModel {
 		}
 
 		values = values.join(',');
-		await this.dbClient.transactionQuery(`UPDATE citasmedicas.${this.entity} SET ${values} WHERE ${this.primaryKey}=${id}`);
+		await this.dbClient.singleQuery(`UPDATE citasmedicas.${this.entity} SET ${values} WHERE ${this.primaryKey}=${id}`);
 	}
 }
 

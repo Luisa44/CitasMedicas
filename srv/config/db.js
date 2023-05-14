@@ -22,37 +22,4 @@ module.exports = {
 			});
 		});
 	},
-
-	transactionQuery: (query) => {
-		return new Promise((resolve, reject) => {
-			pool.getConnection((err, connection) => {
-				if (err) {
-					return reject(err);
-				}
-
-				connection.beginTransaction((error) => {
-					if (error) {
-						return reject(err);
-					}
-
-					connection.query(query, function (errQuery, result, fields) {
-						if (errQuery) {
-							console.error(errQuery);
-							connection.rollback();
-							return reject(new Error(`Error on query: ${query}`));
-						}
-
-						connection.commit((errCommit) => {
-							if (errCommit) {
-								connection.rollback();
-								return reject(new Error(`Error on query: ${query}`));
-							}
-						});
-
-                        resolve(result);
-					});
-				});
-			});
-		});
-	},
 };

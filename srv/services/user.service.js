@@ -62,7 +62,7 @@ class UserService {
             return result;
 
 		} catch (err) {
-            console.log(err);
+            console.error(err);
 			if (loginCreated) {
 				await this.#loginService.deleteOne(loginCreated.idlogin);
 			}
