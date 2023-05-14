@@ -61,7 +61,7 @@ class AuthService {
 	async signUp(login) {
 		login.contrasena = await encrypt.hashPassword(login.contrasena);
 		login.activo = true;
-		login.recuperar_contrasena = false;
+		
 		let loginCreated;
 
 		try {

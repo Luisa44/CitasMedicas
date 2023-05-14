@@ -8,7 +8,7 @@ class DoctorModel extends GenericModel {
 	async findAll(options = null) {
 
 		return this.dbClient.singleQuery(
-			`SELECT doc.nombremedicoadmin as name, doc.identificacion as identification, 
+			`SELECT doc.idmedicoadmin as id, doc.nombremedicoadmin as name, doc.identificacion as identification, 
 				doc.direccionmedicoadmin as address, doc.celularumedicoadmin as phone, 
 				doc.apellidomedicoadmin as surname, rol.rol as role, l.email, dcRol.idespecialidad as speciality
 				FROM citasmedicas.${this.entity} as doc 

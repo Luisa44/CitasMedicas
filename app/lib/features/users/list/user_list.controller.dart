@@ -13,4 +13,8 @@ class UserController {
   Future<List<User>> getAll() async {
     return service.getAll();
   }
+
+  Future<bool> deleteOne(User user){
+    return service.deteleOne(user.id ?? 0);
+  }
 }

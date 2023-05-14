@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 class User {
+  int? id;
   String? name;
   String? surname;
   String? identification;
@@ -11,6 +12,7 @@ class User {
   int? speciality;
 
   User({
+      this.id,
       this.name,
       this.surname,
       this.identification,
@@ -22,6 +24,7 @@ class User {
     });
 
   User.fromJson(Map<String, dynamic> json) {
+    id = json["id"];
     name = json["name"];
     surname = json["surname"];
     identification = json["identification"];

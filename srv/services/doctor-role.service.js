@@ -10,6 +10,10 @@ class DoctorRoleService extends GenericService {
 		let [result] = await this.model.findByLoginId(userId);
 		return result;
 	}
+
+	async deleteOneByUser(userId){
+		return this.model.deleteByDoctorAdminId(userId);
+	}
 }
 
 module.exports = { DoctorRoleService };
